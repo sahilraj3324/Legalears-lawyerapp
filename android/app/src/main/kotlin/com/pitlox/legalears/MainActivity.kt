@@ -1,4 +1,4 @@
-package com.example.lawyerapp
+package com.pitlox.legalears
 
 import io.flutter.embedding.android.FlutterActivity
 

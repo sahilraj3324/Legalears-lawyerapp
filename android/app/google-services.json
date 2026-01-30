@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "477837981748",
+    "project_id": "legal-ears-cd9eb",
+    "storage_bucket": "legal-ears-cd9eb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477837981748:android:2785c8397221f6680b7261",
+        "android_client_info": {
+          "package_name": "com.pitlox.legalears"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPsf-zKrJCqlXcPPcA7Nb97_fgCZ_SBtg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../auth-screen/phone_login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -31,6 +32,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           'Your entire legal practice in your pocket. Manage cases anytime, anywhere.',
     },
   ];
+
+  void _navigateToLogin() {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => const PhoneLoginScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,10 +131,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: () {
-                              // Navigate to Login
-                              debugPrint('Navigate to Login');
-                            },
+                            onPressed: _navigateToLogin,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue[900],
                               foregroundColor: Colors.white,
@@ -146,10 +150,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           width: double.infinity,
                           height: 50,
                           child: OutlinedButton(
-                            onPressed: () {
-                              // Navigate to Signup
-                              debugPrint('Navigate to Signup');
-                            },
+                            onPressed: _navigateToLogin,
                             style: OutlinedButton.styleFrom(
                               foregroundColor: Colors.blue[900],
                               side: BorderSide(
