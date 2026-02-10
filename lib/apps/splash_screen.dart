@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
 import 'onboarding-screen/onboarding_screen.dart';
-import 'home-screen/home_screen.dart';
+import 'onboarding-screen/lawyer_onboarding_screen.dart';
+import 'main_screen.dart';
 
 /// Splash screen that checks authentication status on app start.
 class SplashScreen extends StatefulWidget {
@@ -25,12 +26,20 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (!mounted) return;
 
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (_) =>
-            isAuthenticated ? const HomeScreen() : const OnboardingScreen(),
-      ),
-    );
+    if (isAuthenticated) {
+      final lawyer = authService.lawyer;
+      final destination = (lawyer != null && lawyer.isProfileComplete)
+          ? const MainScreen()
+          : const LawyerOnboardingScreen();
+
+      Navigator.of(
+        context,
+      ).pushReplacement(MaterialPageRoute(builder: (_) => destination));
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const OnboardingScreen()),
+      );
+    }
   }
 
   @override

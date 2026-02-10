@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../services/auth_service.dart';
-import '../auth-screen/phone_login_screen.dart';
 
 /// Home screen displayed after successful authentication.
 class HomeScreen extends StatelessWidget {
@@ -19,18 +18,11 @@ class HomeScreen extends StatelessWidget {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_outlined),
-            onPressed: () {
-              // TODO: Navigate to notifications
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () {
-              // TODO: Navigate to settings
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -79,7 +71,7 @@ class HomeScreen extends StatelessWidget {
 
                       // Name
                       Text(
-                        lawyer?.name ?? 'Lawyer',
+                        lawyer?.fullName ?? 'Lawyer',
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -97,24 +89,32 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
 
-                      if (lawyer?.specialization != null) ...[
+                      if (lawyer != null &&
+                          lawyer.specializations.isNotEmpty) ...[
                         const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 6,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withAlpha(26),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            lawyer!.specialization!,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                            ),
-                          ),
+                        Wrap(
+                          spacing: 6,
+                          runSpacing: 6,
+                          alignment: WrapAlignment.center,
+                          children: lawyer.specializations.take(2).map((spec) {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withAlpha(26),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                spec,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ],
                     ],
@@ -164,37 +164,6 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ],
-                  ),
-                ),
-
-                const SizedBox(height: 32),
-
-                // Logout Button
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: OutlinedButton.icon(
-                      onPressed: authService.isLoading
-                          ? null
-                          : () => _logout(context, authService),
-                      icon: authService.isLoading
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Icon(Icons.logout),
-                      label: const Text('Logout'),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.red[700],
-                        side: BorderSide(color: Colors.red[700]!),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                    ),
                   ),
                 ),
 
@@ -255,37 +224,5 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> _logout(BuildContext context, AuthService authService) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Logout'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed == true && context.mounted) {
-      await authService.signOut();
-      if (context.mounted) {
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const PhoneLoginScreen()),
-          (route) => false,
-        );
-      }
-    }
   }
 }

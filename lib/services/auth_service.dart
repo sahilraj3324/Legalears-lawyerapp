@@ -215,6 +215,50 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+  /// Update the lawyer's profile with onboarding data.
+  Future<bool> updateProfile(Map<String, dynamic> profileData) async {
+    try {
+      _setLoading(true);
+      _clearError();
+
+      if (_lawyer == null) {
+        _setError('No lawyer data found');
+        _setLoading(false);
+        return false;
+      }
+
+      final token = await _storageService.getToken();
+      if (token == null) {
+        _setError('No auth token found');
+        _setLoading(false);
+        return false;
+      }
+
+      // Call backend API to update profile
+      final updatedLawyer = await _apiService.updateLawyerProfile(
+        _lawyer!.id,
+        profileData,
+        token,
+      );
+
+      // Update local state
+      _lawyer = updatedLawyer;
+      await _storageService.saveLawyerData(jsonEncode(updatedLawyer.toJson()));
+
+      debugPrint('Profile updated successfully');
+      notifyListeners();
+      return true;
+    } on ApiException catch (e) {
+      _setError(e.message);
+      return false;
+    } catch (e) {
+      _setError('Failed to update profile: $e');
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
   /// Sign out from Firebase and clear stored tokens.
   Future<void> signOut() async {
     try {

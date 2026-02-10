@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../services/auth_service.dart';
-import '../home-screen/home_screen.dart';
+import '../main_screen.dart';
+import '../onboarding-screen/lawyer_onboarding_screen.dart';
 
 /// OTP verification screen.
 class OTPScreen extends StatefulWidget {
@@ -89,9 +90,14 @@ class _OTPScreenState extends State<OTPScreen> {
       if (!mounted) return;
 
       if (authenticated) {
-        // Navigate to home screen
+        // Check if profile is complete
+        final lawyer = authService.lawyer;
+        final destination = (lawyer != null && lawyer.isProfileComplete)
+            ? const MainScreen()
+            : const LawyerOnboardingScreen();
+
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const HomeScreen()),
+          MaterialPageRoute(builder: (_) => destination),
           (route) => false,
         );
       }
