@@ -48,6 +48,25 @@ dependencies:
   # State Management
   provider: ^6.1.5
 
+  # Chat - Real-time
+  socket_io_client: ^3.0.2
+
+  # Chat - Local Database (offline-first)
+  sqflite: ^2.4.2
+  path: ^1.9.1
+  path_provider: ^2.1.5
+
+  # Chat - Connectivity
+  connectivity_plus: ^6.1.4
+
+  # Chat - File sharing
+  image_picker: ^1.1.2
+  file_picker: ^8.1.7
+  mime: ^2.0.0
+
+  # Utilities
+  uuid: ^4.5.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
